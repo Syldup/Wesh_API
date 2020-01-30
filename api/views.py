@@ -5,6 +5,7 @@ from api.serializers import *
 class CodePromoViewSet(viewsets.ModelViewSet):
     queryset = CodePromo.objects.all()
     serializer_class = CodePromoSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class UserViewSet(viewsets.ModelViewSet):
