@@ -6,7 +6,7 @@ from api import views
 
 router = routers.DefaultRouter()
 router.register(r'codepromo', views.CodePromoViewSet)
-router.register(r'user', views.UserViewSet)
+router.register(r'history', views.HistoryViewSet)
 
 
 urlpatterns = [

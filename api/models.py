@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class CodePromo(models.Model):
@@ -8,7 +9,7 @@ class CodePromo(models.Model):
     end_time = models.DateTimeField()
 
 
-# class Historique(models.Model):
-#     code = models.ForeignKey(CodePromo)
-#     name = models.F(max_length=50, default='')
-#     time = models.DateTimeField()
+class History(models.Model):
+    code = models.ForeignKey(CodePromo, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now=True)

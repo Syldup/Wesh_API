@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 from api.models import *
 
 
@@ -9,7 +8,7 @@ class CodePromoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UserSerializer(serializers.ModelSerializer):
+class HistorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = History
         fields = '__all__'
