@@ -1,5 +1,8 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
+from django.db.models import Max
+
+
 from api.serializers import *
 
 
@@ -15,6 +18,12 @@ class CodePromoViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+    def get_queryset(self):
+        time = self.request.query_params.get('time', None)
+        if time:
+            return CodePromo.objects.filter(create_time__lte=time, end_time__gte=time).order_by('end_time')
+        return CodePromo.objects.all().order_by('end_time')
+
 
 class HistoryViewSet(viewsets.ModelViewSet):
     queryset = History.objects.all()
@@ -23,5 +32,6 @@ class HistoryViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return History.objects.filter(user=user)
-
+        queryset = History.objects.filter(user=user)
+        times = [i['time__max'] for i in queryset.values('code').annotate(Max('time'))]
+        return queryset.filter(time__in=times).order_by('-time')
